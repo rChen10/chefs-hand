@@ -19,7 +19,7 @@ function requestApi(res, ingr) {
     var ingredients = ingr;
 
     var api_request = edamamApi +
-                    "?q=" + ingredients +
+                    "?q=" + ingr +
                     "&app_id=" + app_id +
                     "&app_key=" + app_key;
     
@@ -38,8 +38,8 @@ function requestApi(res, ingr) {
     });
 }
 
-app.get('/api/:ingr', (req, res) => {
-    requestApi(res, req.params.ingr);
+app.get('/api', (req, res) => {
+    requestApi(res, req.query.ingr);
 });
 
 port = process.env.PORT || 5000;

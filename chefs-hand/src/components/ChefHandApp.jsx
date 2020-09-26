@@ -15,6 +15,7 @@ class ChefHandApp extends Component {
   };
 
   addIngredient = (e) => {
+    e.preventDefault();
     this.setState((prevState) => ({
       ingredients: [...prevState.ingredients, ""],
       recipes: prevState.recipes
@@ -38,7 +39,7 @@ class ChefHandApp extends Component {
   }
 
   callBackendAPI = async (ingredients) => {
-    const response = await fetch("/api/" + ingredients[0]);
+    const response = await fetch("/api?ingr=" + (ingredients.map((ingr, indx) => (indx === ingredients.length-1 ? ingr : ingr + "+"))));
     const body = await response.json();
 
     if (response.status !== 200) {
@@ -65,7 +66,7 @@ class ChefHandApp extends Component {
             })
           }
           <button onClick={this.addIngredient}> Add new ingredient</button>
-          <input type="submit" value="Submit" />
+          <input type="submit" value="Submit" data-name="ingrSubmit"/>
         </form>
         <p>
           {
