@@ -3,23 +3,23 @@ import React, { Component } from "react";
 class ChefHandApp extends Component {
   state = {
     ingredients: [""],
-    recipes: []
+    recipes: [],
   };
 
   // Helper Functions
   addRecipe = (res) => {
     this.setState((prevState) => ({
       ingredients: prevState.ingredients,
-      recipes: [...prevState.recipes, res]
-    }))
+      recipes: [...prevState.recipes, res],
+    }));
   };
 
   addIngredient = (e) => {
     e.preventDefault();
     this.setState((prevState) => ({
       ingredients: [...prevState.ingredients, ""],
-      recipes: prevState.recipes
-    }))
+      recipes: prevState.recipes,
+    }));
   };
 
   // Event Handlers
@@ -31,54 +31,88 @@ class ChefHandApp extends Component {
   ingredientChangeHandler = (event) => {
     let ingredients = [...this.state.ingredients];
     ingredients[event.target.dataset.id] = event.target.value;
-    this.setState({ingredients});
+    this.setState({ ingredients });
   };
 
   // Backend functions
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   callBackendAPI = async (ingredients) => {
-    const response = await fetch("/api?ingr=" + (ingredients.map((ingr, indx) => (indx === ingredients.length-1 ? ingr : ingr + "+"))));
+    const response = await fetch(
+      "/api?ingr=" +
+        ingredients.map((ingr, indx) =>
+          indx === ingredients.length - 1 ? ingr : ingr + "+"
+        )
+    );
     const body = await response.json();
 
     if (response.status !== 200) {
       throw Error(body.message);
     }
-    console.log(body.url)
+    console.log(body);
     this.addRecipe(body);
   };
 
   // Render
   render() {
-    let {ingredients} = this.state, {recipes} = this.state;
+    let { ingredients } = this.state,
+      { recipes } = this.state;
     return (
       <div>
         <h1> Chef's Hand </h1>
-        <form onSubmit={this.ingredientSubmitHandler} onChange={this.ingredientChangeHandler}>
+        <form
+          onSubmit={this.ingredientSubmitHandler}
+          onChange={this.ingredientChangeHandler}
+        >
           <label htmlFor="Ingredient">Ingredient</label>
-          {
-            ingredients.map((ing, indx) => {
-              let ingId = 'ingredient$(indx)';
-              return(
-                <input type="text" name="Ingredient" data-id={indx} id={"ingredient" + indx} />
-              );
-            })
-          }
+          {ingredients.map((ing, indx) => {
+            let ingId = "ingredient$(indx)";
+            return (
+              <input
+                type="text"
+                name="Ingredient"
+                data-id={indx}
+                id={"ingredient" + indx}
+              />
+            );
+          })}
           <button onClick={this.addIngredient}> Add new ingredient</button>
-          <input type="submit" value="Submit" data-name="ingrSubmit"/>
+          <input type="submit" value="Submit" data-name="ingrSubmit" />
         </form>
-        <p>
-          {
-            recipes.map((rec, indx) => {
-              return(
-                <div data-id={indx} id={"recipe" + indx}>
-                <a href={rec.url}> Here is your recipe.</a>
-                </div>
-              );
-            })
-          }
-        </p>
+        <div className="recipesArea">
+          {recipes.reverse().map((rec, indx) => {
+            return (
+              <div data-id={indx} id={"recipe" + indx} className="simpleRecipe">
+                <a href={rec.url} className="recipeLink">
+                  <img
+                    src={rec.image}
+                    href={rec.url}
+                    alt="An image of your requested recipe"
+                    className="recipeImage"
+                  ></img>
+                </a>
+                <a href={rec.url} className="recipeLink">
+                  <h1>{rec.label}</h1>
+                </a>
+                <ul>
+                  <li>Recipe Source: {rec.source}</li>
+                  <li>Yields: {rec.yield} Servings</li>
+                  <li>Calories: {parseInt(rec.calories)}</li>
+                  <li>
+                    Ingredients:
+                    {rec.ingredients.map((ingdnt) => {
+                      return (
+                        <div>
+                          <p>{ingdnt.text}</p>
+                        </div>
+                      );
+                    })}
+                  </li>
+                </ul>
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   }
