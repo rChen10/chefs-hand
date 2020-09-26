@@ -3,59 +3,64 @@ import React, { Component } from "react";
 class ChefHandApp extends Component {
   state = {
     ingredients: [""],
-    urls: []
+    recipes: []
   };
 
   // Helper Functions
-  apiState = (res) => {
+  addRecipe = (res) => {
     this.setState((prevState) => ({
       ingredients: prevState.ingredients,
-      urls: [...prevState.urls, res.url]
+      recipes: [...prevState.recipes, res]
     }))
   };
 
   addIngredient = (e) => {
     this.setState((prevState) => ({
       ingredients: [...prevState.ingredients, ""],
-      urls: prevState.urls
+      recipes: prevState.recipes
     }))
   };
 
   // Event Handlers
-  ingredientHandler = (event) => {
+  ingredientSubmitHandler = (event) => {
     event.preventDefault();
+    var recipe = this.callBackendAPI(this.state.ingredients);
+  };
+
+  ingredientChangeHandler = (event) => {
+    let ingredients = [...this.state.ingredients];
+    ingredients[event.target.dataset.id] = event.target.value;
+    this.setState({ingredients});
   };
 
   // Backend functions
   componentDidMount() {
-    // Call our fetch function below once the component mounts
-    this.callBackendAPI()
-      .then((res) => this.apiState(res))
-      .catch((err) => console.log(err));
   }
 
-  callBackendAPI = async () => {
-    const response = await fetch("/api");
+  callBackendAPI = async (ingredients) => {
+    const response = await fetch("/api/" + ingredients[0]);
     const body = await response.json();
 
     if (response.status !== 200) {
       throw Error(body.message);
     }
-    return body;
+    console.log(body.url)
+    this.addRecipe(body);
   };
 
+  // Render
   render() {
-    let {ingredients} = this.state;
+    let {ingredients} = this.state, {recipes} = this.state;
     return (
       <div>
         <h1> Chef's Hand </h1>
-        <form onSubmit={this.ingredientHandler}>
+        <form onSubmit={this.ingredientSubmitHandler} onChange={this.ingredientChangeHandler}>
           <label htmlFor="Ingredient">Ingredient</label>
           {
             ingredients.map((ing, indx) => {
-              let ingId = 'ingredient${indx+1}';
+              let ingId = 'ingredient$(indx)';
               return(
-                <input type="text" name="Ingredient" id={ingId} />
+                <input type="text" name="Ingredient" data-id={indx} id={"ingredient" + indx} />
               );
             })
           }
@@ -63,7 +68,15 @@ class ChefHandApp extends Component {
           <input type="submit" value="Submit" />
         </form>
         <p>
-          <a href={this.state.urls[0]}>Here is your recipe.</a>
+          {
+            recipes.map((rec, indx) => {
+              return(
+                <div data-id={indx} id={"recipe" + indx}>
+                <a href={rec.url}> Here is your recipe.</a>
+                </div>
+              );
+            })
+          }
         </p>
       </div>
     );

@@ -15,8 +15,8 @@ app.get('/test', (req,res) => {
     res.send({hello: 'Hello, World!'});
 });
 
-function requestApi(res) {
-    var ingredients = 'chicken';
+function requestApi(res, ingr) {
+    var ingredients = ingr;
 
     var api_request = edamamApi +
                     "?q=" + ingredients +
@@ -38,8 +38,8 @@ function requestApi(res) {
     });
 }
 
-app.get('/api', (req, res) => {
-    requestApi(res);
+app.get('/api/:ingr', (req, res) => {
+    requestApi(res, req.params.ingr);
 });
 
 port = process.env.PORT || 5000;
