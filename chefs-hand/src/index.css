@@ -15,10 +15,16 @@ code {
 .recipesArea {
   display: flex;
   flex-direction: column;
+  flex-grow: 0;
+  width: 40%;
+}
+
+.recipeForm > * {
+  display: block;
 }
 
 .recipeImage {
-  float: left;
+  float: right;
   margin-right: 1em;
   border-radius: 1em;
   border: 1px solid #d9d9d9;
@@ -37,4 +43,8 @@ code {
 /* anchor */
 .recipeLink {
   text-decoration: none;
+}
+
+.recipeLabel {
+  margin: 0;
 }

@@ -66,6 +66,7 @@ class ChefHandApp extends Component {
         <form
           onSubmit={this.ingredientSubmitHandler}
           onChange={this.ingredientChangeHandler}
+          className="recipeForm"
         >
           <label htmlFor="Ingredient">Ingredient</label>
           {ingredients.map((ing, indx) => {
