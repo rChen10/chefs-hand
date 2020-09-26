@@ -23,7 +23,7 @@ function requestApi(res, ingr) {
       "&to=90";
 
   request(api_request, { json: true }, (error, response, body) => {
-    if (body) {
+    if (body == null) { // not sure if this works
       res.send({label: "dummy", message: "Server error. Please try again later."});
       return;
     }
