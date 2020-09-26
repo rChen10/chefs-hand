@@ -9,8 +9,8 @@ app.get('/test', (req,res) => {
 function requestApi(res) {
     var ingredients = 'chicken';
     var edamamApi = "https://api.edamam.com/search";
-    var app_id = "95632fc6";
-    var app_key = "24317438a2ab57d35880553abaef8db0";
+    var app_id = "";
+    var app_key = "";
 
     var api_request = edamamApi +
                     "?q=" + ingredients +
