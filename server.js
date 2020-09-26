@@ -1,6 +1,15 @@
 const express = require('express')
 const app = express()
 const request = require('request')
+const fs = require('fs')
+
+var edamamApi = "https://api.edamam.com/search";
+var app_id = "";
+var app_key = "";
+
+// Set app_id and app_key
+app_id = fs.readFileSync('app_id.txt');
+app_key = fs.readFileSync('app_key.txt');
 
 app.get('/test', (req,res) => {
     res.send({hello: 'Hello, World!'});
@@ -8,9 +17,6 @@ app.get('/test', (req,res) => {
 
 function requestApi(res) {
     var ingredients = 'chicken';
-    var edamamApi = "https://api.edamam.com/search";
-    var app_id = "";
-    var app_key = "";
 
     var api_request = edamamApi +
                     "?q=" + ingredients +
