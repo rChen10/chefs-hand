@@ -92,7 +92,7 @@ class ChefHandApp extends Component {
                   ></img>
                 </a>
                 <a href={rec.url} className="recipeLink">
-                  <h1>{rec.label}</h1>
+                  <h1 className="recipeLabel">{rec.label}</h1>
                 </a>
                 <ul>
                   <li>Recipe Source: {rec.source}</li>
@@ -101,11 +101,7 @@ class ChefHandApp extends Component {
                   <li>
                     Ingredients:
                     {rec.ingredients.map((ingdnt) => {
-                      return (
-                        <div>
-                          <p>{ingdnt.text}</p>
-                        </div>
-                      );
+                      return <p>{ingdnt.text}</p>;
                     })}
                   </li>
                 </ul>
