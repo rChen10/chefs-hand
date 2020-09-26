@@ -19,21 +19,32 @@ function requestApi(res, ingr) {
   var ingredients = ingr;
 
   var api_request =
-    edamamApi + "?q=" + ingr + "&app_id=" + app_id + "&app_key=" + app_key;
+    edamamApi + "?q=" + ingr + "&app_id=" + app_id + "&app_key=" + app_key +
+      "&to=90";
 
   request(api_request, { json: true }, (error, response, body) => {
-    var recipe = body.hits[0].recipe;
-    var simple_recipe = {
-      label: recipe.label,
-      image: recipe.image,
-      url: recipe.url,
-      yield: recipe.yield,
-      ingredients: recipe.ingredients,
-      totalNutrients: recipe.totalNutrients,
-      calories: recipe.calories,
-      source: recipe.source,
-    };
-    res.send(simple_recipe);
+    if (body) {
+      res.send({label: "dummy", message: "Server error. Please try again later."});
+      return;
+    }
+    if (body.count > 0){
+      var indx = Math.floor(Math.random() * (body.count >= 90 ? 90 : body.count));
+      var recipe = body.hits[indx].recipe;
+      var simple_recipe = {
+        label: recipe.label,
+        image: recipe.image,
+        url: recipe.url,
+        yield: recipe.yield,
+        ingredients: recipe.ingredients,
+        totalNutrients: recipe.totalNutrients,
+        calories: recipe.calories,
+        source: recipe.source,
+      };
+      res.send(simple_recipe);
+    }
+    else{
+      res.send({label: "dummy", message: "No recipes found."});
+    }
   });
 }
 

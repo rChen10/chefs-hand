@@ -25,7 +25,7 @@ class ChefHandApp extends Component {
   // Event Handlers
   ingredientSubmitHandler = (event) => {
     event.preventDefault();
-    var recipe = this.callBackendAPI(this.state.ingredients);
+    this.callBackendAPI(this.state.ingredients);
   };
 
   ingredientChangeHandler = (event) => {
@@ -50,7 +50,10 @@ class ChefHandApp extends Component {
       throw Error(body.message);
     }
     console.log(body);
-    this.addRecipe(body);
+    if(body.label === "dummy"){
+      alert(body.message)
+    }
+    else{ this.addRecipe(body); }
   };
 
   // Render
