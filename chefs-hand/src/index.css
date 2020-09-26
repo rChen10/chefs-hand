@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #cfe0e8;
 }
 
 code {
@@ -12,15 +13,28 @@ code {
     monospace;
 }
 
+h1{
+  margin: auto;
+  text-align: center;
+}
+
 .recipesArea {
   display: flex;
   flex-direction: column;
   flex-grow: 0;
-  width: 40%;
+  width: 100%;
+  padding: 5px;
 }
 
 .recipeForm > * {
   display: block;
+  margin: auto;
+  text-align: center;
+}
+
+.recipeForm {
+  background-color: #b7d7e8;
+  margin: auto;
 }
 
 .recipeImage {
@@ -32,8 +46,11 @@ code {
 }
 
 .simpleRecipe {
+  margin: auto;
   margin-top: 1em;
-  margin-left: 1em;
+  background-color: #87bdd8;
+  padding: 5px;
+  width: 50%
 }
 
 .simpleRecipe ul {

@@ -68,7 +68,7 @@ class ChefHandApp extends Component {
           onChange={this.ingredientChangeHandler}
           className="recipeForm"
         >
-          <label htmlFor="Ingredient">Ingredient</label>
+          <label htmlFor="Ingredient">Ingredients</label>
           {ingredients.map((ing, indx) => {
             let ingId = "ingredient$(indx)";
             return (
